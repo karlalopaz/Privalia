@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import static junit.framework.Assert.*;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 public class StepDefinition
@@ -42,22 +43,54 @@ public class StepDefinition
     }
 
     @When("I am in Privalia home page")
-    public void iAmInPrivaliaHomePage() {
+    public void iAmInPrivaliaHomePage()
+    {
+        driver.get("https://mex.privalia.com/public/");
+        //logo privalia id= "claim"
+        WebElement privaliaLogo = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("claim")));
+        assertTrue(privaliaLogo.isDisplayed());
+        //boton entrar css= "['.grid_4 #authLogin']"
+       // WebElement botonEntrar = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("['.grid_4 #authLogin']")));
+       // assertTrue(privaliaLogo.isEnabled());
+
     }
 
 
     @Then("All the feature ads are up to date")
-    public void allTheFeatureAdsAreUpToDate() {
+    public void allTheFeatureAdsAreUpToDate()
+    {
+        List<WebElement> promociones = driver.findElements(By.xpath("//h2[ text() = 'Destacados']/following-sibling::article"));
+        for(WebElement w: promociones)
+        {
+            WebElement vigencia = w.findElement(By.cssSelector(".item-dataInfo"));
+            System.out.println(vigencia.getText());
+        }
     }
 
 
     @Then("All the current ads are up to date")
-    public void allTheCurrentAdsAreUpToDate() {
+    public void allTheCurrentAdsAreUpToDate()
+    {
+        List<WebElement> promociones = driver.findElements(By.xpath("//h2[ text() = 'Actualmente']/following-sibling::article"));
+        for(WebElement w: promociones)
+        {
+            WebElement vigencia = w.findElement(By.cssSelector(".item-dataInfo"));
+            System.out.println(vigencia.getText());
+        }
     }
 
 
-    @Then("Coming up promotions dont have a due date")
-    public void comingUpPromotionsDontHaveADueDate() {
+    @Then("Coming up promotions have start date")
+    public void comingUpPromotionsHaveStartDate()
+    {
+        List<WebElement> promociones = driver.findElements(By.xpath("//h2[ text() = 'Próximamente']/following-sibling::article"));
+        for(WebElement w: promociones)
+        {
+            WebElement marcaElement = w.findElement(By.xpath("./a"));
+            String marca = marcaElement.getAttribute("href").split("campaign/")[1].split("/")[0];
+            WebElement startDate = w.findElement(By.cssSelector(".item-dataInfo"));
+            System.out.println(marca + " " + startDate.getText());
+        }
     }
 
 }

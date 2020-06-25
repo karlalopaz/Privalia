@@ -9,6 +9,6 @@ Feature: Promociones home page
     When I am in Privalia home page
     Then All the current ads are up to date
 
-  Scenario: Coming up promotions dont have a due date
+  Scenario: Coming up promotions have start date
     When I am in Privalia home page
-    Then Coming up promotions dont have a due date
+    Then Coming up promotions have start date
